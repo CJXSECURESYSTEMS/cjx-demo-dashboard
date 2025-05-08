@@ -1,56 +1,71 @@
 
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
-import datetime
-import random
+import json
 import os
 
-DEMO_MODE = True
+# Config
+st.set_page_config(page_title="CJX Aegis Demo", layout="wide")
 
-# Auto-refresh every 30s
-st_autorefresh(interval=30000, key="demo_refresh")
+# Header
+st.markdown(
+    "<h1 style='text-align: left; color: #003366;'>"
+    "<img src='https://raw.githubusercontent.com/cjxsecuresystems/cjx-demo-dashboard/main/assets/cjx_logo_transparent.png' width='120' style='margin-right:10px;'> CJX Aegis - Cybersecurity Demo</h1>",
+    unsafe_allow_html=True
+)
+st.markdown("<hr style='margin-top:-10px;'>", unsafe_allow_html=True)
 
-# Red alert banner
-if DEMO_MODE:
-    st.markdown("""
-    <div style='background-color:#e74c3c; padding:10px 15px; border-radius:6px; font-weight:bold; color:white; text-align:center;'>
-    🚫 This is a DEMO. No actions will be executed.
-    </div>
-    """, unsafe_allow_html=True)
+# Load scenarios
+with open("scenarios.json", "r") as f:
+    scenarios = json.load(f)["scenarios"]
 
-# Demo metrics
-if DEMO_MODE:
-    mock_data = {
-        "alerts": random.randint(0, 5),
-        "uptime": f"{round(random.uniform(98.0, 99.99), 2)}%",
-        "devices_online": random.randint(5, 20)
-    }
+# Sidebar for scenario selection
+scenario_titles = [s["title"] for s in scenarios]
+selected = st.sidebar.selectbox("🛡️ Choose a breach scenario", scenario_titles)
+scenario = next(s for s in scenarios if s["title"] == selected)
 
-    st.metric("Active Alerts", mock_data["alerts"])
-    st.metric("System Uptime", mock_data["uptime"])
-    st.metric("Online Devices", mock_data["devices_online"])
+# Main metrics
+col1, col2, col3 = st.columns(3)
+col1.metric("Active Alerts", 4)
+col2.metric("System Uptime", "98.62%")
+col3.metric("Online Devices", 20)
 
-# Disabled actions
-st.divider()
-st.subheader("Controls (Demo Locked)")
+st.markdown("### 🔍 Breach Summary")
+st.subheader(scenario["company"] + " — " + scenario["title"])
+st.write(scenario["summary"])
 
-st.button("Deploy Agent", disabled=True)
-st.button("Download Audit Report", disabled=True)
-st.button("Export Logs", disabled=True)
-st.caption("🔒 All controls are disabled in demo mode.")
+st.markdown("### 🚨 Triggered Alerts")
+st.code("\n".join(scenario["alerts"]), language="bash")
 
-# Log user intent
-def log_action(action: str):
-    with open("demo_audit_log.txt", "a") as log:
-        log.write(f"[{datetime.datetime.now()}] Demo Action Attempt: {action}\n")
+st.markdown("### 🔥 Breach Impact")
+st.info(scenario["impact"])
 
-if st.button("Simulate Incident Alert"):
-    log_action("Attempted incident simulation")
-    st.warning("🚫 Action not allowed in demo.")
+st.markdown("### 🛠️ CJX Response Plan")
+st.success(scenario["action_plan"])
 
-# Watermark
-st.markdown("""
-    <div style='position:fixed; bottom:10px; right:10px; 
-    background-color:#f39c12; color:white; padding:5px 15px; 
-    border-radius:8px; font-weight:bold;'>DEMO MODE</div>
-""", unsafe_allow_html=True)
+# Agent Simulation
+st.markdown("---")
+st.subheader("🧠 Agent Response Controls")
+if st.button("🚀 Deploy CJX Agent"):
+    st.success("CJX Agent successfully deployed and response initiated!")
+
+# Download + View PDF report
+report_file = scenario.get("report_file")
+if report_file and os.path.exists(report_file):
+    with open(report_file, "rb") as f:
+        st.download_button(
+            label="📥 Download Incident Report",
+            data=f,
+            file_name=report_file,
+            mime="application/pdf"
+        )
+else:
+    st.warning("No report found or file missing.")
+
+# Footer
+st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center; color: gray;'>"
+    "© 2025 CJX Secure Systems — All rights reserved. | <a href='https://www.cjxsecure.com' target='_blank'>www.cjxsecure.com</a>"
+    "</p>",
+    unsafe_allow_html=True
+)
