@@ -1,0 +1,26 @@
+{
+  "scenarios": [
+    {
+      "company": "AlphaTech",
+      "title": "Stealth Breach (Undetected)",
+      "summary": "Detected abnormal lateral movement and suppressed alerts. No user flagged it.",
+      "alerts": [
+        "suspicious_login",
+        "unknown_command_execution",
+        "data_exfiltration"
+      ],
+      "impact": "Full system compromise. Data leak via S3 sync. No alerts acknowledged."
+    },
+    {
+      "company": "BetaCorp",
+      "title": "Preventable Ransomware Breach",
+      "summary": "Unpatched server allowed RDP entry. Ransomware encrypted core databases.",
+      "alerts": [
+        "outdated_tls",
+        "rdp_brute_force",
+        "mass_file_encryption"
+      ],
+      "impact": "Business halt. Payment demanded. Root cause: no EDR, no MFA, weak IAM."
+    }
+  ]
+}
