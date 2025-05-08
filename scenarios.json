@@ -1,64 +1,43 @@
 {
   "scenarios": [
     {
-      "company": "AlphaTech",
-      "title": "Stealth Breach (Undetected)",
-      "summary": "Detected abnormal lateral movement and suppressed alerts. No user flagged it.",
-      "alerts": [
-        "suspicious_login",
-        "unknown_command_execution",
-        "data_exfiltration"
-      ],
-      "impact": "Full system compromise. Data leak via S3 sync. No alerts acknowledged.",
-      "action_plan": "Conduct forensic investigation. Reset credentials. Patch blindspots. Train team on anomaly detection."
-    },
-    {
-      "company": "BetaCorp",
-      "title": "Preventable Ransomware Breach",
-      "summary": "Unpatched server allowed RDP entry. Ransomware encrypted core databases.",
-      "alerts": [
-        "outdated_tls",
-        "rdp_brute_force",
-        "mass_file_encryption"
-      ],
-      "impact": "Business halted. Ransom payment demanded. Data recovery uncertain.",
-      "action_plan": "Restore from backups. Enforce RDP lockdown. Deploy EDR + MFA. Audit all remote access."
-    },
-    {
       "company": "SMC Industries",
-      "title": "Persistent Stealth Attacks",
-      "summary": "Company under constant attack. IT unaware due to no detection tools.",
+      "title": "Silent Attack Ignored by Security Team",
+      "summary": "Multiple intrusion attempts went undetected by the company's security team due to lack of visibility and alerting systems.",
       "alerts": [
-        "dns_tunneling",
-        "credential_stuffing",
+        "brute_force_login",
+        "dns_tunnel",
         "privilege_escalation"
       ],
-      "impact": "Silent access to data for weeks. Insider abuse undetected.",
-      "action_plan": "Deploy CJX Agent. Agent found threat, removed malware, activated advanced telemetry."
+      "impact": "Active intrusion ongoing for 14 days. Access to internal documents, employee credentials, and finance systems established. Systems appeared healthy due to silent persistence methods.",
+      "action_plan": "Upon deployment, CJX Agent performed endpoint scans, revealed dormant malware and rootkits. Threat neutralized, alerting re-enabled, team notified. System logs now monitored with AI-based detection.",
+      "report_file": "SMC_Industries_Audit_Report.pdf"
     },
     {
       "company": "Freelancer Laptop",
-      "title": "Email Virus Infection",
-      "summary": "User clicked a link. Virus spread fast with admin-level access.",
+      "title": "Email Virus Infection from Phishing",
+      "summary": "A freelancer opened an email with a hidden executable that quietly installed a remote control agent.",
       "alerts": [
-        "malicious_email",
-        "keylogger",
-        "remote_access_tool"
+        "malware_injection",
+        "unauthorized_access",
+        "suspicious_data_transfer"
       ],
-      "impact": "Full laptop takeover. Sensitive files exposed. Webcam accessed.",
-      "action_plan": "CJX Agent isolated device. Cut network. Removed payload. Restarted in secure mode."
+      "impact": "The attacker gained full control: installed keylogger, activated webcam, accessed saved credentials. Spreading laterally to nearby unsecured networks.",
+      "action_plan": "CJX Agent isolated the laptop, shut down command channels, purged the RAT payload, enabled safe boot protocols and resecured local data vault.",
+      "report_file": "Freelancer_Laptop_Audit_Report.pdf"
     },
     {
       "company": "BlueShield Enterprise",
-      "title": "Leak via Non-Compliant Shadow Service",
-      "summary": "Strong security missed 1 area. Shadow database accessed externally.",
+      "title": "Data Leak Despite Strong Perimeter",
+      "summary": "A compliant enterprise missed enforcing proper data residency and endpoint patching for one shadow IT asset. A sophisticated actor used this to bypass defenses.",
       "alerts": [
-        "unauthorized_api",
-        "geo_anomaly",
-        "mass_download"
+        "external_upload",
+        "geo_discrepancy",
+        "unusual_transfer_rate"
       ],
-      "impact": "2.4GB of data leaked. HR and legal teams alerted.",
-      "action_plan": "CJX Agent blocked access. Monitored IPs. Captured logs. Generated legal report."
+      "impact": "1.9GB of employee and vendor data was exfiltrated before being contained. CJX caught the anomaly, traced it to an unmonitored asset.",
+      "action_plan": "CJX Agent blocked outgoing traffic, preserved forensic evidence, identified IP trail of attackers, initiated coordinated monitoring and delivered executive-level response report.",
+      "report_file": "BlueShield_Enterprise_Audit_Report.pdf"
     }
   ]
 }
