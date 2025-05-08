@@ -1,56 +1,57 @@
 
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
+import json
 import datetime
 import random
 import os
 
-DEMO_MODE = True
+st.set_page_config(page_title="CJX Aegis Demo", layout="wide")
+st.image("assets/cjx_logo_transparent.png", width=180)
 
-# Auto-refresh every 30s
-st_autorefresh(interval=30000, key="demo_refresh")
+with open("scenarios.json", "r") as f:
+    scenarios = json.load(f)["scenarios"]
 
-# Red alert banner
-if DEMO_MODE:
-    st.markdown("""
+st.sidebar.header("CJX Scenario Viewer")
+scenario_options = [s["title"] for s in scenarios]
+selected_title = st.sidebar.selectbox("Choose a breach scenario", scenario_options)
+
+scenario = next(s for s in scenarios if s["title"] == selected_title)
+
+st.title("🔒 CJX Aegis - Cybersecurity Incident Demo")
+
+st.markdown("""
     <div style='background-color:#e74c3c; padding:10px 15px; border-radius:6px; font-weight:bold; color:white; text-align:center;'>
     🚫 This is a DEMO. No actions will be executed.
     </div>
     """, unsafe_allow_html=True)
 
-# Demo metrics
-if DEMO_MODE:
-    mock_data = {
-        "alerts": random.randint(0, 5),
-        "uptime": f"{round(random.uniform(98.0, 99.99), 2)}%",
-        "devices_online": random.randint(5, 20)
-    }
+col1, col2, col3 = st.columns(3)
+col1.metric("Active Alerts", random.randint(2, 5))
+col2.metric("System Uptime", f"{round(random.uniform(98.0, 99.99), 2)}%")
+col3.metric("Online Devices", random.randint(10, 20))
 
-    st.metric("Active Alerts", mock_data["alerts"])
-    st.metric("System Uptime", mock_data["uptime"])
-    st.metric("Online Devices", mock_data["devices_online"])
+st.markdown("---")
+st.subheader(f"📌 {scenario['company']} - {scenario['title']}")
+st.write(scenario["summary"])
+st.write("### Triggered Alerts")
+st.code("\n".join(scenario["alerts"]), language="bash")
 
-# Disabled actions
-st.divider()
-st.subheader("Controls (Demo Locked)")
+st.write("### Breach Impact")
+st.warning(scenario["impact"])
 
-st.button("Deploy Agent", disabled=True)
-st.button("Download Audit Report", disabled=True)
-st.button("Export Logs", disabled=True)
-st.caption("🔒 All controls are disabled in demo mode.")
+st.markdown("---")
+st.subheader("Controls (Interactive Demo)")
 
-# Log user intent
-def log_action(action: str):
-    with open("demo_audit_log.txt", "a") as log:
-        log.write(f"[{datetime.datetime.now()}] Demo Action Attempt: {action}\n")
+if st.button("🚀 Deploy Agent"):
+    st.success("Agent successfully simulated on target device!")
 
-if st.button("Simulate Incident Alert"):
-    log_action("Attempted incident simulation")
-    st.warning("🚫 Action not allowed in demo.")
+if st.button("📥 Download Audit Report"):
+    if "AlphaTech" in scenario["company"]:
+        with open("AlphaTech_Audit_Report.pdf", "rb") as f:
+            st.download_button("Click to download AlphaTech Report", f, file_name="AlphaTech_Audit_Report.pdf")
+    else:
+        with open("BetaCorp_Audit_Report.pdf", "rb") as f:
+            st.download_button("Click to download BetaCorp Report", f, file_name="BetaCorp_Audit_Report.pdf")
 
-# Watermark
-st.markdown("""
-    <div style='position:fixed; bottom:10px; right:10px; 
-    background-color:#f39c12; color:white; padding:5px 15px; 
-    border-radius:8px; font-weight:bold;'>DEMO MODE</div>
-""", unsafe_allow_html=True)
+if st.button("🚨 Simulate Incident Alert"):
+    st.warning("🚨 New incident alert triggered in mock log.")
