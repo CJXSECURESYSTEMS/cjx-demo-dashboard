@@ -9,7 +9,8 @@
         "unknown_command_execution",
         "data_exfiltration"
       ],
-      "impact": "Full system compromise. Data leak via S3 sync. No alerts acknowledged."
+      "impact": "Full system compromise. Data leak via S3 sync. No alerts acknowledged.",
+      "action_plan": "Conduct forensic investigation. Reset credentials. Patch blindspots. Train team on anomaly detection."
     },
     {
       "company": "BetaCorp",
@@ -20,7 +21,44 @@
         "rdp_brute_force",
         "mass_file_encryption"
       ],
-      "impact": "Business halt. Payment demanded. Root cause: no EDR, no MFA, weak IAM."
+      "impact": "Business halted. Ransom payment demanded. Data recovery uncertain.",
+      "action_plan": "Restore from backups. Enforce RDP lockdown. Deploy EDR + MFA. Audit all remote access."
+    },
+    {
+      "company": "SMC Industries",
+      "title": "Persistent Stealth Attacks",
+      "summary": "Company under constant attack. IT unaware due to no detection tools.",
+      "alerts": [
+        "dns_tunneling",
+        "credential_stuffing",
+        "privilege_escalation"
+      ],
+      "impact": "Silent access to data for weeks. Insider abuse undetected.",
+      "action_plan": "Deploy CJX Agent. Agent found threat, removed malware, activated advanced telemetry."
+    },
+    {
+      "company": "Freelancer Laptop",
+      "title": "Email Virus Infection",
+      "summary": "User clicked a link. Virus spread fast with admin-level access.",
+      "alerts": [
+        "malicious_email",
+        "keylogger",
+        "remote_access_tool"
+      ],
+      "impact": "Full laptop takeover. Sensitive files exposed. Webcam accessed.",
+      "action_plan": "CJX Agent isolated device. Cut network. Removed payload. Restarted in secure mode."
+    },
+    {
+      "company": "BlueShield Enterprise",
+      "title": "Leak via Non-Compliant Shadow Service",
+      "summary": "Strong security missed 1 area. Shadow database accessed externally.",
+      "alerts": [
+        "unauthorized_api",
+        "geo_anomaly",
+        "mass_download"
+      ],
+      "impact": "2.4GB of data leaked. HR and legal teams alerted.",
+      "action_plan": "CJX Agent blocked access. Monitored IPs. Captured logs. Generated legal report."
     }
   ]
 }
